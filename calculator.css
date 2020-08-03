@@ -16,17 +16,38 @@ body {
     margin-top: 5%;
     overflow: hidden;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.31);
-    color: white;
+    color: #ebebeb;
     font-family: "century gothic", sans-serif;
-    font-size: 40px;
+    font-size: 30px;
     text-align: center;
     line-height: 63px;
 }
 #display{
     width: 330px;
     height: 90px;
-    background-color: rgba(105, 168, 191, 0.71);
+    background-color: rgba(85, 146, 169, 0.71);
     position: relative;
+}
+#clean{
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    line-height: 55px;
+    margin: 20px 0 0 15px;
+    color: rgba(255, 255, 255, 0.30);
+    font-size: 30px;
+    z-index: 3;
+}
+#input{
+    line-height: 60px;
+    color: white;
+    position: absolute;
+    margin: 15px 5px 0 10px;
+    width: 95%;
+    text-align: right;
+    z-index: 2;
+    font-size: 40px;
 }
 #keyboard{
     width: 330px;
@@ -35,15 +56,34 @@ body {
     padding: 3px;
 }
 .button{
-    width: 65px;
-    height: 60px;
+    width: 67px;
+    height: 63px;
     background-color: rgba(105, 168, 191, 0.8);
     position: relative;
     float: left;
-    margin: 8px;
+    margin: 7px;
     border-radius: 5px;
-    border-bottom: 5px rgba(113, 111, 113, 0.3) solid;
+    box-shadow: 0 4px 0 rgba(56, 58, 64, 0.4);
 }
 .extremeRow{
-    background-color: rgba(228, 203, 160, 0.8);
+    background-color: rgba(235, 196, 131, 0.8);
+}
+.button:hover{
+    background-color: rgba(233, 233, 233, 0.65);
+    color: #535353;
+    cursor: pointer
+}
+#clean:hover{
+    background-color: rgba(67, 133, 156, 0.31);
+    color: #eeeeee;
+    cursor: pointer
+}
+.button:active{
+    transform: translateY(6px);
+    transition: 0.2s ease;
+    box-shadow: none;
+}
+#clean:active{
+    transform: translateY(6px);
+    transition: 0.2s ease;
 }
