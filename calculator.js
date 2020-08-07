@@ -52,5 +52,29 @@ function joinNumbers(output) {
 }
 
 function convertToRPN(output) {
-
+    for(let i = 0; i < output.length; i++){
+        if(output[i] === "x" || "÷" && output[i + 1]!== "+" || "-" || "x" || "÷"){
+            let value = output[i];
+            output[i] = output[i + 1];
+            output[i + 1] = value;
+        }
+    }
+    let outputToString = output.join("");
+    let outputString = "";
+    for (let char of outputToString) {
+        if (char === "+" || "-") {
+            char = " " + `${char}` + " ";
+        }
+        outputString = outputString + char;
+    }
+    output = outputString.split(" ");
+    for(let i = 0; i < output.length; i++){
+        if(output[i] === "-" || "+" && output[i + 1]!== "+" || "-"){
+            let value = output[i];
+            output[i] = output[i + 1];
+            output[i + 1] = value;
+        }
+    }
+    output = joinNumbers(output);
+    return output;
 }
