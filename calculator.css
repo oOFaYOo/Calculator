@@ -5,7 +5,8 @@ body {
     background-color: #8fbdb5;
     margin: 0;
 }
-#base{
+
+#base {
     width: 330px;
     height: 420px;
     position: relative;
@@ -23,14 +24,16 @@ body {
     line-height: 63px;
     user-select: none;
 }
-#display{
+
+#display {
     width: 330px;
     height: 90px;
     background-color: rgba(85, 146, 169, 0.71);
     position: relative;
     user-select: none;
 }
-#clean{
+
+#clean {
     position: absolute;
     width: 55px;
     height: 55px;
@@ -42,7 +45,8 @@ body {
     z-index: 3;
     user-select: none;
 }
-#input{
+
+#input {
     line-height: 60px;
     color: white;
     position: absolute;
@@ -53,14 +57,16 @@ body {
     font-size: 40px;
     user-select: none;
 }
-#keyboard{
+
+#keyboard {
     width: 330px;
     height: 350px;
     position: relative;
     padding: 3px;
     user-select: none;
 }
-.button{
+
+.button {
     width: 67px;
     height: 63px;
     background-color: rgba(105, 168, 191, 0.8);
@@ -71,26 +77,31 @@ body {
     box-shadow: 0 4px 0 rgba(56, 58, 64, 0.4);
     user-select: none;
 }
-.extremeRow{
+
+.extremeRow {
     background-color: rgba(235, 196, 131, 0.8);
     user-select: none;
 }
-.button:hover{
+
+.button:hover {
     background-color: rgba(233, 233, 233, 0.65);
     color: #535353;
     cursor: pointer
 }
-#clean:hover{
+
+#clean:hover {
     background-color: rgba(67, 133, 156, 0.31);
     color: #eeeeee;
     cursor: pointer
 }
-.button:active{
+
+.button:active {
     transform: translateY(6px);
     transition: 0.2s ease;
     box-shadow: none;
 }
-#clean:active{
+
+#clean:active {
     transform: translateY(6px);
     transition: 0.2s ease;
 }
