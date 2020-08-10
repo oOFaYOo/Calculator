@@ -1,75 +1,60 @@
-//CR(ZarkariaDia): НА дисплей
-let output = []; //То, что выводится в дисплей
-//CR(ZarkariaDia): Тогда уж не input. buttons больше подходит по смыслу.
-let input = document.getElementsByClassName("button"); //То, что вводится с клавиатуры калькулятора
+
+let output = []; //То, что выводится на дисплей в "display"
+let buttons = document.getElementsByClassName("button"); //То, что вводится с клавиатуры калькулятора
 let buttonEquals = document.querySelector(".equals"); //Кнопка "равно"
+let buttonClean = document.getElementById("clean");
+let input = document.getElementById("input");
 
-//CR(ZarkariaDia): Логика навешивания обработчиков на кнопки довольно крупная. Можно вынести в отдельную функцию.
-for (let part of input) {
-    //CR(ZarkariaDia): Вместо part больше подходит button
-    part.onclick = () => {  //При нажатии на копошки...
-        //CR(ZarkariaDia): IDE говорит, что второе условие работать не будет, тк в innerHTML всегда строка, а не число. Проверка на то, что это знак, ниже реализована по другому.
-        //CR(ZarkariaDia): БАГ: можно нажать -, потом другой знак и ввести что-то вроде x3
-        if (output.length === 0 && isNaN(part.innerHTML) && part.innerHTML !== "-") {  //Позваляет начать строку с цифры или со знака минус
-            return;
-        }
-
-        //CR(ZarkariaDia): Функция в середине логики. Должна быть в конце. Иначе тяжело читать.
-        //CR(ZarkariaDia): Имя функции -- глагол. Возможно что-то типа checkExistingPoint или pointAlreadyExists.
-        function point(output) {  //Отображение точки
-            //CR(ZarkariaDia): Аргумент можно и переименовать. Функции пофиг, что в нее передают массив с именем output. Когда на вход подают что-то с именем outчто-то -- это странно.
-            //CR(ZarkariaDia): Либо вообщеот казаться от передачи output через аргументы. Тогда ниже потенциальный баг, с перезаписыванием переменной.
-            //CR(ZarkariaDia): Легко запутаться в названиях. Не отражают реального смысла переменных.
-            let outputToString = output.join("");
-            let outputString = "";
-
-            for (let char of outputToString) {
-                if (char === "x" || char === "+" || char === "-" || char === "÷") {
-                    char = " ";
-                }
-                outputString = outputString + char;
-            }
-
-            //CR(ZarkariaDia): Тут можно и завести отдельную переменную. Назначение у них разное.
-            output = outputString.split(" ");
-            return output[output.length - 1].includes(".");
-        }
-
-        if (part.innerHTML === "." && (point(output))) {
-            return;
-        }
-
-        if (isNaN(output[output.length - 1]) && part.classList.contains("sign")) { //Не дает писать два знака подряд
-            output.pop();
-        }
-
-        //CR(ZarkariaDia): Раз output -- глобальная переменная, то эта логика легко выносится в функцию Refresh
-        output.push(part.innerHTML); //Сохраняем значения в "вывод на дисплей"
-        //CR(ZarkariaDia): Зачем снова запрашивать элемент input, если мы это уже делали во второй строчке скрипта?
-        document.getElementById("input").innerHTML = output.join(""); //Выводим
-    }
-}
-
-//CR(ZarkariaDia): buttonClean можно получить заранее по аналогии с buttonEquals
-document.getElementById("clean").onclick = () => {    //Очистка дисплея
-    //CR(ZarkariaDia): input уже получали
-    document.getElementById("input").innerHTML = null;
+buttonClean.onclick = () => {    //Очистка дисплея
+    input.innerHTML = null;
     output = [];
 };
 
-//CR(ZarkariaDia): Код, который будет отрабатывать сразу при открытии страницы (вне функций), и код, сгруппированный по функциям, принято разделять. Например все функции переместить вниз.
-buttonEquals.onclick = () => equals(output); //Действие по нажатию "равно"
+for (let button of buttons) {
+    button.onclick = () => {  //При нажатии на копошки...
+        if (output.length === 0 && isNaN(+(button.innerHTML)) && button.innerHTML !== "-") {  //Позваляет начать строку с цифры или со знака минус
+            return;
+        }
+        if (button.innerHTML === "." && (checkExistingPoint())) {
+            return;
+        }
+        if(output.length === 1 && isNaN(output[output.length - 1]) && button.classList.contains("sign")){
+            return;
+        }
+        if (isNaN(output[output.length - 1]) && button.classList.contains("sign")) { //Не дает писать два знака подряд
+            output.pop();
+        }
 
-//CR(ZarkariaDia): Имя функции должно быть глаголом. <Сделать><Что-либо>
+        output.push(button.innerHTML); //Сохраняем значения в "вывод на дисплей"
+        input.innerHTML = output.join(""); //Выводим
+
+        function checkExistingPoint() {  //Отображение точки
+            let joinedStr = output.join("");
+            let resultStr = "";
+
+            for (let char of joinedStr) {
+                if (char === "x" || char === "+" || char === "-" || char === "÷") {
+                    char = " ";
+                }
+                resultStr = resultStr + char;
+            }
+
+            let result = resultStr.split(" ");
+            return result[result.length - 1].includes(".");
+        }
+    }
+}
+
+buttonEquals.onclick = () => calculate(output); //Действие по нажатию "равно"
 //CR(ZarkariaDia): БАГ: сейчас можно ввести выражение не до конца и нажать на equals, например 2x
 //CR(ZarkariaDia): БАГ: после нажатия =, при начале ввода знаков, на дисплей возарвщается старое выражение
 //CR(ZarkariaDia): Тут тоже непонятно, почему output подается на вход. Аргумент может называться внутрикак угодно.
-function equals(output) {       //Функция для "равно"
+function calculate(output) {       //Функция для "равно"
     output = joinNumbers(output);
     output = convertToRPN(output);
     output = RPN(output);
     //CR(ZarkariaDia): Уже получали этот элемент.
-    document.getElementById("input").innerHTML = output.join("");
+    input.innerHTML = output.join("");
 }
 
 function joinNumbers(output) {
@@ -101,7 +86,7 @@ function convertToRPN(output) {
     let newOutput = [];
 
     //CR(ZarkariaDia): Название метки можно сделать более содержательным.
-    a: for (let i = 0; i < output.length - 1; i++) {
+    a: for (let i = 0; i < output.length; i++) {
         let current = output[i];
         if (current === "+" || current === "-") {
             for (let j = i + 1; j < output.length; j++) {
