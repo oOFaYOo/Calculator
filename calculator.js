@@ -38,13 +38,13 @@ document.getElementById("clean").onclick = () => {    //Очистка дисп�
 };
 
 
-buttonEquals.onclick = () => equals (output); //Действие по нажатию "равно"
+buttonEquals.onclick = () => equals(output); //Действие по нажатию "равно"
 
-function equals(output){       //Функция для "равно"
+function equals(output) {       //Функция для "равно"
     output = joinNumbers(output);
     output = convertToRPN(output);
     output = RPN(output);
-    document.getElementById("input").innerHTML = output;
+    document.getElementById("input").innerHTML = output.join("");
 }
 
 function joinNumbers(output) {
@@ -60,8 +60,8 @@ function joinNumbers(output) {
 }
 
 function convertToRPN(output) {
-    for(let i = 0; i < output.length-1; i++){
-        if((output[i] === "x" || output[i] === "÷") && output[i + 1]!== "+" && output[i + 1]!== "-" && output[i + 1]!== "x" && output[i + 1]!== "÷"){
+    for (let i = 0; i < output.length - 1; i++) {
+        if ((output[i] === "x" || output[i] === "÷") && output[i + 1] !== "+" && output[i + 1] !== "-" && output[i + 1] !== "x" && output[i + 1] !== "÷") {
             let value = output[i];
             output[i] = output[i + 1];
             output[i + 1] = value;
@@ -69,45 +69,48 @@ function convertToRPN(output) {
     }
 
     let newOutput = [];
-    a: for (let i = 0; i < output.length - 1; i++){
+    a: for (let i = 0; i < output.length - 1; i++) {
         let current = output[i];
-           if (current === "+" || current === "-"){
-               for ( let j = i + 1; j < output.length; j++){
-                   if (output[j]==="+" || output[j]==="-"){
-                       i = j-1;
-                       break;
-                   }
-                   newOutput.push(output[j]);
-                   if (j === output.length - 1)
-                   {
-                       newOutput.push(current);
-                       break a;
-                   }
-               }
-           }
-           newOutput.push(current);
-       }
+        if (current === "+" || current === "-") {
+            for (let j = i + 1; j < output.length; j++) {
+                if (output[j] === "+" || output[j] === "-") {
+                    i = j - 1;
+                    break;
+                }
+                newOutput.push(output[j]);
+                if (j === output.length - 1) {
+                    newOutput.push(current);
+                    break a;
+                }
+            }
+        }
+        newOutput.push(current);
+    }
     return newOutput;
 }
 
-function RPN (output){
+function RPN(output) {
     let signs = {
-        "+": function (a, b) { return a + b},
-        "-": function (a, b) { return b - a},
-        "x": function (a, b) { return a * b},
-        "÷": function (a, b) { return b / a}
+        "+": function (a, b) {
+            return b + a
+        },
+        "-": function (a, b) {
+            return b - a
+        },
+        "x": function (a, b) {
+            return b * a
+        },
+        "÷": function (a, b) {
+            return b / a
+        }
     };
 
-let someArr = [];
+    let result = [];
 
-for (let part of output){
-    if(part in signs){
-       someArr.push(signs[part] (someArr.pop(), someArr.pop()));
+    for (let part of output) {
+        if (part in signs) {
+            result.push(signs[part](+(result.pop()), +(result.pop())));
+        } else result.push(part)
     }
-    someArr.push(part)
+    return result;
 }
-return someArr;
-}
-
-
-
