@@ -3,7 +3,7 @@ let input = document.getElementsByClassName("button"); //То, что вводи
 let buttonEquals = document.querySelector(".equals"); //Кнопка "равно"
 
 for (let part of input) {
-    part.onclick = () => {  //При нажатии на копошки...
+    part.onclick = () => {  //При нажатии на кнопошки...
         if (output.length === 0 && isNaN(part.innerHTML) && part.innerHTML !== "-") {  //Позваляет начать строку с цифры или со знака минус
             return;
         }
