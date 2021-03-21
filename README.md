@@ -6,4 +6,4 @@ Works only in Google Chrome.
 
 First experience in writing projects using HTML5, CSS3, JS
 
-![calculator](https://github.com/oOFaYOo/Calculator/blob/master/calc.jpg)
+![calculator](https://github.com/oOFaYOo/Calculator/blob/master/demo.gif)
